@@ -59,8 +59,8 @@
             <div slot="footer">
                 <ButtonGroup shape="circle">
 
-                    <Button type="primary" icon="refresh" @click="reloadPage">reload page</Button>
-                    <Button type="primary" icon="android-download" @click="installMetaMask">isntall
+                    <Button type="primary" icon="refresh" @click="reloadPage">Reload page</Button>
+                    <Button type="primary" icon="android-download" @click="installMetaMask">Install
                         MetaMask
                     </Button>
                 </ButtonGroup>
