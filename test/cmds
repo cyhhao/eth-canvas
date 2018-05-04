@@ -1,0 +1,3 @@
+geth --rinkeby --rpc --rpcapi db,eth,net,web3,personal --cache=2048  --rpcport 8545 --rpcaddr 127.0.0.1 --rpccorsdomain "*" console
+
+personal.unlockAccount(address, "password")
