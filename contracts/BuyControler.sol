@@ -32,7 +32,7 @@ contract BuyControler is Ownable, PullPayment, Pausable, Destructible {
 
 
     modifier isAllow(uint x, uint y, uint8 color) {
-        require(x < 100 && y < 100 && color > 0 && color < 255);
+        require(x < 50 && y < 50 && color > 0 && color < 255);
         _;
     }
 
@@ -46,7 +46,7 @@ contract BuyControler is Ownable, PullPayment, Pausable, Destructible {
     function sendBuyPayment(address lastOwner, uint payLast) internal {
         if (lastOwner != address(0) || payLast == 0) {
             asyncSend(lastOwner, payLast);
-            asyncSend(address(0xA020eDb9f8aBCc883aa8C8C1171455D6E0e95d42), basePrice);
+            asyncSend(address(0xAbF74C68A27057c5124f3880BE70563bb52879DA), basePrice);
         }
     }
 

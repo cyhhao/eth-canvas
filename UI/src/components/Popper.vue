@@ -130,6 +130,7 @@
                                 desc: "Wait for a while to take effect..."
                             })
                             this.close()
+                            this.$emit("paysuccess", this.data.x, this.data.y, this.selectedColor)
                         }
                         else {
                             let matchMsg = e.message.match(/} (Error:.*)\n/)

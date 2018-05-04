@@ -1,6 +1,11 @@
 <template>
     <div>
-        <Popper :x="clickpX" :y="clickpY" :show.sync="showMenu" :data="selectData" :colorMapping="colorMapping"/>
+        <Popper :x="clickpX" :y="clickpY"
+                :show.sync="showMenu"
+                :data="selectData"
+                :colorMapping="colorMapping"
+                @paysuccess="paySuccess"
+        />
 
         <div style="cursor:pointer;">
             <canvas ref="myCanvas" :width="canHeight" :height="canHeight"
@@ -24,7 +29,6 @@
         "#7FDBFF",
         "#39CCCC",
         "#00fff9",
-        "#00fff9",
         "#3D9970",
         "#2ECC40",
         "#01FF70",
@@ -32,23 +36,26 @@
         "#FFDC00",
         "#fff000",
         "#FF851B",
-        "#FF4136",
-        "#ff3877",
+        "#ff0015",
+        "#ff91e8",
         "#F012BE",
         "#B10DC9",
+        "#d80026",
         "#85144B",
         "#ff8a99",
         "#ffbcd6",
         "#FFFFFF",
-        "#AAAAAA",
         "#DDDDDD",
+        "#AAAAAA",
+        "#646464",
         "#111111"]
 
     export default {
         name: 'PaintBoard',
         components: {Popper},
-        props: ["maps"],
+        props: ["mapsIn"],
         data() {
+            console.log("innerHeight", window.innerHeight - 20, NUM)
             return {
                 canHeight: window.innerHeight - 20,
                 board: [],
@@ -60,7 +67,8 @@
                 colorMapping: window.colorMapping,
                 tmpShape: null,
                 per: (window.innerHeight - 20) / NUM,
-                move_up: false
+                move_up: false,
+                maps: []
             }
         },
         async mounted() {
@@ -86,8 +94,9 @@
 
         },
         watch: {
-            maps(val) {
+            mapsIn(val) {
                 console.log('change')
+                this.maps = this.mapsIn
                 this.drawMap()
             }
         },
@@ -100,7 +109,7 @@
             drawMap() {
                 this.stage.removeAllChildren()
                 let per = this.per
-                console.log(per)
+                console.log("NUM", per, NUM)
                 for (let i = 0; i < NUM; i++) {
                     for (let j = 0; j < NUM; j++) {
                         let shape = new createjs.Shape()
@@ -134,7 +143,7 @@
                 //添加外边框
                 let outline = new createjs.Shape()
                 outline.graphics
-                    .setStrokeStyle(0.5,"round")
+                    .setStrokeStyle(0.5, "round")
                     .setStrokeDash([10, 10], 0)
                     .beginStroke("#000").drawRect(0, 0, this.canHeight, this.canHeight)
                 this.stage.addChild(outline)
@@ -242,6 +251,10 @@
 
 
                 // let color=mapContract.
+            },
+            paySuccess(x, y, color) {
+                this.maps[x][y] = color
+                this.drawMap()
             }
         }
     }

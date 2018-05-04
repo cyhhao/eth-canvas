@@ -7,9 +7,9 @@ contract Map is Ownable {
 
     NamespaceProxy npContract;
     //	address NpAddr0;
-    uint8[100][100] public paintMap;
-    address[100][100] public ownerMap;
-    uint[100][100] public cntMap;
+    uint8[50][50] public paintMap;
+    address[50][50] public ownerMap;
+    uint[50][50] public cntMap;
 
 
     function Map(address NpAddr) public {
@@ -29,11 +29,11 @@ contract Map is Ownable {
         cntMap[x][y] = cntMap[x][y] + 1;
     }
 
-    function getPaintMap() public view returns (uint8[100][100]){
+    function getPaintMap() public view returns (uint8[50][50]){
         return paintMap;
     }
 
-    function getPaintMapRow(uint x) public view returns (uint8[100]){
+    function getPaintMapRow(uint x) public view returns (uint8[50]){
         return paintMap[x];
     }
 

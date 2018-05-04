@@ -73,7 +73,6 @@
     import axios from 'axios'
     import PaintBoard from './PaintBoard'
 
-    window.NUM = 100.0
     export default {
         name: 'HelloWorld',
         components: {PaintBoard},
@@ -87,7 +86,11 @@
                 noMask: false
             }
         },
+        beforeMount(){
+            window.NUM = 100.0
+        },
         mounted() {
+
             this.init()
         },
         methods: {

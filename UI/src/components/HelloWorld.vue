@@ -3,11 +3,12 @@
         <div style="margin:10px">
             <ButtonGroup>
                 <Button type="primary" shape="circle" icon="refresh" @click="onRefresh">Refresh</Button>
+                <Button type="primary" shape="circle" icon="arrow-shrink" @click="onReset">Reset</Button>
                 <!--<Button type="primary" shape="circle" icon="ios-search">Search</Button>-->
             </ButtonGroup>
         </div>
         <div style="margin:10px">
-            <PaintBoard ref="paintBoard" :maps="maps"/>
+            <PaintBoard ref="paintBoard" :mapsIn="maps"/>
 
         </div>
         <div>
@@ -73,19 +74,21 @@
     import axios from 'axios'
     import PaintBoard from './PaintBoard'
 
-    window.NUM = 50.0
     export default {
         name: 'HelloWorld',
         components: {PaintBoard},
         data() {
             return {
                 maps: [],
-                spinShow: false,
+                spinShow: true,
                 account: null,
                 banlance: 0,
                 income: 0,
                 noMask: false
             }
+        },
+        beforeMount() {
+            window.NUM = 50.0
         },
         mounted() {
             this.init()
@@ -96,8 +99,10 @@
                     console.log(res)
                     window.myWeb3 = res
                     this.noMask = false
+                    this.spinShow = false
                     this.loadMaps()
                 }).catch((e) => {
+                    this.spinShow = false
                     this.noMask = true
                     console.log(e)
 
@@ -211,6 +216,10 @@
             onRefresh() {
                 this.loadMaps()
                 this.$refs.paintBoard.refresh()
+            },
+            onReset(){
+                this.$refs.paintBoard.refresh()
+
             },
             reloadPage() {
                 location.reload()
