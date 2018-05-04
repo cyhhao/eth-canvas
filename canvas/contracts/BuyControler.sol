@@ -11,36 +11,33 @@ contract BuyControler is Ownable, PullPayment {
 
 	NamespaceProxy npContract;
 	//200 Szabo
-	uint basePrice = 200000000000000;
+	uint constant basePrice = 200000000000000;
+
+	event BuyPointSucceed(uint indexed x, uint indexed y, uint8 color);
 
 	function BuyControler(address NpAddr) public {
 		npContract = NamespaceProxy(NpAddr);
 	}
 
-	function getPointPrice(uint x, uint y, uint color) public view returns (uint, uint) {
+	function getPointPrice(uint x, uint y) public view returns (uint price, uint payLast) {
 		Map map = Map(address(npContract.getContract("Map")));
-		uint cnt = map.cntMap(x, y);
+		//		uint cnt = map.cntMap(x, y);
 		//price= cnt*2*basePrice+basePrice
-		uint payLast = SafeMath.mul(SafeMath.mul(cnt, 2), basePrice);
-		uint price = SafeMath.add(payLast, basePrice);
-		return (price, payLast);
+		payLast = SafeMath.mul(SafeMath.mul(map.cntMap(x, y), 2), basePrice);
+		price = SafeMath.add(payLast, basePrice);
 	}
 
 
 
-	modifier isAllow(uint x, uint y, uint color) {
-		uint width = npContract.getConstantUint("width");
-		uint height = npContract.getConstantUint("height");
-		uint colorType = npContract.getConstantUint("colorType");
-		require(x < width && y < height && color > 0 && color < colorType);
+	modifier isAllow(uint x, uint y, uint8 color) {
+		require(x < 100 && y < 100 && color > 0 && color < 255);
 		_;
 	}
 
-	function paintPoint(uint x, uint y, uint color) internal returns (address) {
+	function paintPoint(uint x, uint y, uint8 color) internal returns (address last) {
 		Map map = Map(address(npContract.getContract("Map")));
-		address buyer = msg.sender;
-		map.setMap(x, y, color, buyer);
-		return map.ownerMap(x, y);
+		last = map.ownerMap(x, y);
+		map.setMap(x, y, color, msg.sender);
 	}
 
 
@@ -51,17 +48,16 @@ contract BuyControler is Ownable, PullPayment {
 		}
 	}
 
-	function buyPoint(uint x, uint y, uint color) public payable isAllow(x, y, color) returns (uint) {
+	function buyPoint(uint x, uint y, uint8 color) public payable isAllow(x, y, color) {
 		uint price;
 		uint payLast;
-		(price, payLast) = this.getPointPrice(x, y, color);
+		(price, payLast) = this.getPointPrice(x, y);
 		require(msg.value >= price);
 		//set
-		address lastOwner = paintPoint(x, y, color);
+		//		address lastOwner = paintPoint(x, y, color);
 		//sendPay
 
-		sendBuyPayment(lastOwner, payLast);
-
-		return price;
+		sendBuyPayment(paintPoint(x, y, color), payLast);
+		emit BuyPointSucceed(x, y, color);
 	}
 }

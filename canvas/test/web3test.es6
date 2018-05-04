@@ -28,15 +28,15 @@ mapdata = JSON.parse(mapdata)
 		, gas: 1000000
 	})
 
-	var mapContract = new web3.eth.Contract(mapdata.abi, '0xe18ded8a92aaa78a663eef0621bdef8c1d0174f0', {
+	var mapContract = new web3.eth.Contract(mapdata.abi, '0xe638250b6b5a122b2d3220a556e2318a4367f048', {
 		from: accounts[3], // default from address
 		gasPrice: '20000000000' // default gas price in wei, 20 gwei in this case
-		, gas: 1000000
+		, gas: 6721975000
 	})
 	let res
 
-	res = await web3.eth.getBalance("0x4bb7ae12e439e010a00e60bc9eb2337eba677dd1")
-	console.log(res)
+	// res = await web3.eth.getBalance("0x4bb7ae12e439e010a00e60bc9eb2337eba677dd1")
+	// console.log(res)
 
 	// let price = await bcContract.methods.getPointPrice(10, 20, 14)
 	// 	.call({from: accounts[3]})//, value: Math.pow(10, 17)
@@ -55,18 +55,19 @@ mapdata = JSON.parse(mapdata)
 	// console.log(res)
 
 
-	res = await bcContract.methods.withdrawPayments()
-		.send({from: accounts[4]})
-	console.log(res)
+	// res = await bcContract.methods.withdrawPayments()
+	// 	.send({from: accounts[4]})
+	// console.log(res)
+	// //
+	// res = await bcContract.methods.payments("0xA020eDb9f8aBCc883aa8C8C1171455D6E0e95d42")
+	// 	.call({from: accounts[0]})
+	// console.log(res)
 	//
-	res = await bcContract.methods.payments("0xA020eDb9f8aBCc883aa8C8C1171455D6E0e95d42")
-		.call({from: accounts[0]})
-	console.log(res)
+	// res = await mapContract.methods.ownerMap(10, 20).call()
+	// console.log(res)
 
-	res = await mapContract.methods.ownerMap(10, 20).call()
-	console.log(res)
-
-
+	let maps=await mapContract.methods.getByInts().call()
+	console.log(maps)
 
 })()
 

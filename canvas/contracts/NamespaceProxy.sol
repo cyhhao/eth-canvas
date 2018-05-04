@@ -24,12 +24,7 @@ contract NamespaceProxy is Ownable {
 		}
 	}
 
-
 	function getContract(string name) public view returns (address addr){
-		return allContracts[name];
-	}
-
-	function getContractd(string name) public view returns (address){
 		return allContracts[name];
 	}
 
