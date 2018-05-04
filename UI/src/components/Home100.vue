@@ -73,7 +73,7 @@
     import axios from 'axios'
     import PaintBoard from './PaintBoard'
 
-    window.NUM = 50.0
+    window.NUM = 100.0
     export default {
         name: 'HelloWorld',
         components: {PaintBoard},
@@ -159,6 +159,8 @@
                         maps[res.x][res.y] = res.color
                         this.maps = maps
                     }
+
+
                 })
 
             },
