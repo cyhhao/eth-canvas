@@ -23,10 +23,10 @@
                     <Icon type="ios-loop-strong"></Icon>
                     Refresh
                 </a>
-                <h3>Banlance:</h3>
+                <h3>My Balance:</h3>
                 <Tag type="dot" color="blue">{{banlance}} Ether</Tag>
 
-                <h3>Income:</h3>
+                <h3>My Income:</h3>
                 <Tag type="dot" color="blue">{{income}} Ether</Tag>
                 <Button v-if="income>0" type="success" size="small" shape="circle" @click="takeOut">Take out</Button>
             </Card>
@@ -59,7 +59,7 @@
             <div slot="footer">
                 <ButtonGroup shape="circle">
 
-                    <Button type="primary" icon="refresh" @click="reloadPage">Reload page</Button>
+                    <Button type="primary" icon="refresh" @click="reloadPage">Reload Page</Button>
                     <Button type="primary" icon="android-download" @click="installMetaMask">Install
                         MetaMask
                     </Button>
