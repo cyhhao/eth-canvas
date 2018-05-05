@@ -5,6 +5,7 @@
                 :data="selectData"
                 :colorMapping="colorMapping"
                 @paysuccess="paySuccess"
+                :loading="menuLoading"
         />
 
         <div style="cursor:pointer;">
@@ -68,7 +69,8 @@
                 tmpShape: null,
                 per: (window.innerHeight - 20) / NUM,
                 move_up: false,
-                maps: []
+                maps: [],
+                menuLoading: false
             }
         },
         async mounted() {
@@ -135,6 +137,7 @@
                             this.clickpX = e.nativeEvent.clientY
                             this.clickpY = e.nativeEvent.clientX
                             this.showMenu = true
+                            this.menuLoading = true
                             this.clickPoint(i, j, item)
                         })
                         this.stage.addChild(shape)
@@ -237,6 +240,7 @@
                 window.buyContract.getPointPrice.call(x, y, (e, buyPrice) => {
                     this.selectData.buyPrice = buyPrice
                     console.log("buyPrice", buyPrice)
+                    this.menuLoading = false
                 })
 
                 if (item !== 0) {

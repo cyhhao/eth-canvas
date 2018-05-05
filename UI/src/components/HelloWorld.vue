@@ -2,10 +2,34 @@
     <div class="panel-box">
         <div style="margin:10px">
             <ButtonGroup>
-                <Button type="primary" shape="circle" icon="refresh" @click="onRefresh">Refresh</Button>
-                <Button type="primary" shape="circle" icon="arrow-shrink" @click="onReset">Reset</Button>
+                <Button type="ghost" shape="circle" icon="help-circled" @click="showDoc">Help</Button>
+                <Button type="ghost" shape="circle" icon="refresh" @click="onRefresh">Refresh</Button>
+                <Button type="ghost" shape="circle" icon="arrow-shrink" @click="onReset">Reset</Button>
                 <!--<Button type="primary" shape="circle" icon="ios-search">Search</Button>-->
             </ButtonGroup>
+            <transition name="slide-fade">
+                <Alert style="margin-top: 10px" v-if="showDocs">
+                    <h2 style="text-align: center">Game Rules</h2>
+                    <br/>
+                    <p>
+                        There is a 50*50 pixel canvas where everyone can fill a pixel with color.
+                        <br/><br/>
+                        1. For each point drawn, you need to pay 0.002 Ethereum to the platform.
+                        <br/><br/>
+                        2. You can cover pixels that have been drawn by others.
+                        <br/><br/>
+                        3. To cover the pixels of a person, you need to pay him an extra fee.
+                        <br/><br/>
+                        4. The fee paid to the previous person = n*2*0.002 (where n is the number of times this point
+                        was
+                        covered)
+                        <br/><br/>
+                        5. If your point is covered by others, your income will be recorded in the "My Income" in the
+                        upper
+                        right corner. You can click "take out" to withdraw it to your account at any time.
+                    </p>
+                </Alert>
+            </transition>
         </div>
         <div style="margin:10px">
             <PaintBoard ref="paintBoard" :mapsIn="maps"/>
@@ -38,12 +62,12 @@
         <!--<button @click="loadMaps">click</button>-->
 
         <Modal
-            title="Install MetaMask first"
+            :title="notUnlock?'Install MetaMask first':'Unlock MetaMask first'"
             v-model="noMask"
             :closable="false"
             :mask-closable="false">
 
-            <Alert type="warning" show-icon>
+            <Alert type="warning" show-icon v-if="notUnlock">
                 Please install metamask first
                 <template slot="desc">
                     This application is based on Ethereum, so you need to use
@@ -56,11 +80,20 @@
                 </template>
             </Alert>
 
+            <Alert type="warning" show-icon v-else>
+                Please unlock metamask first
+                <template slot="desc">
+                    Your account is locked. Please unlock on MetaMask and reload the page.
+                    <br/>
+                    <img src="/static/metamask.png" style="width:50%"/>
+                </template>
+            </Alert>
+
             <div slot="footer">
                 <ButtonGroup shape="circle">
 
                     <Button type="primary" icon="refresh" @click="reloadPage">Reload Page</Button>
-                    <Button type="primary" icon="android-download" @click="installMetaMask">Install
+                    <Button v-if="notUnlock" type="primary" icon="android-download" @click="installMetaMask">Install
                         MetaMask
                     </Button>
                 </ButtonGroup>
@@ -84,7 +117,9 @@
                 account: null,
                 banlance: 0,
                 income: 0,
-                noMask: false
+                noMask: false,
+                notUnlock: false,
+                showDocs: false
             }
         },
         beforeMount() {
@@ -102,6 +137,7 @@
                     this.spinShow = false
                     this.loadMaps()
                 }).catch((e) => {
+                    if (!window.web3) this.notUnlock = true
                     this.spinShow = false
                     this.noMask = true
                     console.log(e)
@@ -217,7 +253,7 @@
                 this.loadMaps()
                 this.$refs.paintBoard.refresh()
             },
-            onReset(){
+            onReset() {
                 this.$refs.paintBoard.refresh()
 
             },
@@ -226,6 +262,9 @@
             },
             installMetaMask() {
                 window.open('https://chrome.google.com/webstore/detail/nkbihfbeogaeaoehlefnkodbefgpgknn')
+            },
+            showDoc() {
+                this.showDocs = !this.showDocs
             }
 
         }
@@ -247,5 +286,20 @@
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap
+    }
+
+    .slide-fade-enter-active {
+        transition: all .3s ease;
+    }
+
+    .slide-fade-leave-active {
+        transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+    }
+
+    .slide-fade-enter, .slide-fade-leave-to
+        /* .slide-fade-leave-active for below version 2.1.8 */
+    {
+        transform: translateY(-20px);
+        opacity: 0;
     }
 </style>

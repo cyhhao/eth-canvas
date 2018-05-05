@@ -3,6 +3,8 @@
          class="ivu-poptip-popper popper"
          :style="{top:x+5+'px',left:(y-width/2)+'px',width:width+'px'}"
          x-placement="bottom">
+        <Spin size="large" fix v-if="loading"></Spin>
+
         <div class="mask" @click="close"></div>
         <div class="ivu-poptip-content">
             <div class="ivu-poptip-arrow"></div>
@@ -83,7 +85,7 @@
 
     export default {
         name: 'Popper',
-        props: ["x", "y", "show", "data", "colorMapping"],
+        props: ["x", "y", "show", "data", "colorMapping","loading"],
         data() {
             return {
                 width: 400,
