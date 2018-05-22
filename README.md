@@ -58,8 +58,6 @@
 
 知乎：[https://www.zhihu.com/people/cyhhao](https://www.zhihu.com/people/cyhhao)
 
-微博：
-[Weibo: \__Pyth0n__](https://weibo.com/u/1587579460)
-
+微博：[\__Pyth0n__](https://weibo.com/u/1587579460)
 
 原文地址：http://cyhhao.zhusun.in/article/%E4%B8%93%E9%A2%98/blockchain/dapp/
